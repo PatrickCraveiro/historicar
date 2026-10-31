@@ -11,13 +11,14 @@ import {
   TrashIcon,
 } from "@/components/icons";
 import { PlateBadge } from "@/components/plate-badge";
-import { RecordTimeline } from "@/components/record-timeline";
 import { btnAccent, btnGhost, btnSecondary, card } from "@/components/ui";
 import { requireUser } from "@/lib/auth";
 import { getCarById, getNextService, getRecords, toRecordView } from "@/lib/data";
 import { carTitle, nextServiceText } from "@/lib/format";
 import { can } from "@/lib/permissions";
+import type { RecordView } from "@/lib/types";
 import { deleteRecord } from "../../actions";
+import { CarHistory } from "./car-history";
 
 export default async function CarPage({ params }: PageProps<"/painel/carros/[id]">) {
   const user = await requireUser();
@@ -26,6 +27,7 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
   if (!car) notFound();
 
   const records = await getRecords(car._id);
+  const views = records.map((record) => toRecordView(record, { withAuthor: true }));
   const nextService = getNextService(records);
   const canEdit = can.editRecord(user);
   const canDelete = can.deleteRecord(user);
@@ -87,48 +89,46 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
         </div>
       )}
 
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Histórico <span className="font-normal text-slate-400">({records.length})</span>
-        </h2>
-
-        {records.length === 0 ? (
+      <CarHistory
+        records={views}
+        footers={Object.fromEntries(views.map((record) => [record.id, renderFooter(record)]))}
+        empty={
           <div className={`${card} p-8 text-center text-slate-500`}>
             Nenhuma anotação ainda. Clique em <strong>Nova anotação</strong> para registrar o primeiro serviço.
           </div>
-        ) : (
-          <RecordTimeline
-            records={records.map((record) => toRecordView(record, { withAuthor: true }))}
-            renderFooter={(record) => (
-              <footer className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500">
-                <span>
-                  Por {record.createdByName}
-                  {record.updatedByName && ` · editado por ${record.updatedByName}`}
-                </span>
-                {(canEdit || canDelete) && (
-                  <span className="flex gap-1">
-                    {canEdit && (
-                      <AppLink href={`/painel/carros/${id}/anotacoes/${record.id}/editar`} className={btnGhost}>
-                        <PencilIcon className="size-3.5" /> Editar
-                      </AppLink>
-                    )}
-                    {canDelete && (
-                      <form action={deleteRecord.bind(null, id, record.id)}>
-                        <ConfirmButton
-                          message="Excluir esta anotação? Não dá para desfazer."
-                          className={`${btnGhost} hover:bg-red-50 hover:text-red-600`}
-                        >
-                          <TrashIcon className="size-3.5" /> Excluir
-                        </ConfirmButton>
-                      </form>
-                    )}
-                  </span>
-                )}
-              </footer>
-            )}
-          />
-        )}
-      </section>
+        }
+      />
     </div>
   );
+
+  // Rodapé de cada anotação: quem registrou e, conforme a permissão, Editar/Excluir.
+  function renderFooter(record: RecordView) {
+    return (
+      <footer className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500">
+        <span>
+          Por {record.createdByName}
+          {record.updatedByName && ` · editado por ${record.updatedByName}`}
+        </span>
+        {(canEdit || canDelete) && (
+          <span className="flex gap-1">
+            {canEdit && (
+              <AppLink href={`/painel/carros/${id}/anotacoes/${record.id}/editar`} className={btnGhost}>
+                <PencilIcon className="size-3.5" /> Editar
+              </AppLink>
+            )}
+            {canDelete && (
+              <form action={deleteRecord.bind(null, id, record.id)}>
+                <ConfirmButton
+                  message="Excluir esta anotação? Não dá para desfazer."
+                  className={`${btnGhost} hover:bg-red-50 hover:text-red-600`}
+                >
+                  <TrashIcon className="size-3.5" /> Excluir
+                </ConfirmButton>
+              </form>
+            )}
+          </span>
+        )}
+      </footer>
+    );
+  }
 }

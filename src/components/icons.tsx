@@ -151,3 +151,9 @@ export const UsersIcon = (p: IconProps) => (
     <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
   </Icon>
 );
+
+export const ArrowUpDownIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m21 16-4 4-4-4M17 20V4M3 8l4-4 4 4M7 4v16" />
+  </Icon>
+);

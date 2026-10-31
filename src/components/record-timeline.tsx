@@ -4,21 +4,26 @@ import type { RecordView } from "@/lib/types";
 import { BellIcon, CalendarIcon, CheckIcon, GaugeIcon } from "./icons";
 import { card } from "./ui";
 
-/** Lista de anotações em formato de linha do tempo (mais recente primeiro). */
+/**
+ * Lista de anotações em formato de linha do tempo, na ordem recebida.
+ * A bolinha laranja marca o serviço mais recente (`latestId`), seja qual for a ordem.
+ */
 export function RecordTimeline({
   records,
+  latestId = records[0]?.id,
   renderFooter,
 }: {
   records: RecordView[];
+  latestId?: string;
   renderFooter?: (record: RecordView) => ReactNode;
 }) {
   return (
     <ol className="relative ml-2 space-y-4 border-l-2 border-slate-200 pl-6">
-      {records.map((record, index) => (
+      {records.map((record) => (
         <li key={record.id} className="relative">
           <span
             className={`absolute -left-[33px] top-5 size-4 rounded-full border-4 border-white ring-1 ring-slate-200 ${
-              index === 0 ? "bg-orange-500" : "bg-slate-400"
+              record.id === latestId ? "bg-orange-500" : "bg-slate-400"
             }`}
           />
           <RecordCard record={record} footer={renderFooter?.(record)} />
