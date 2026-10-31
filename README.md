@@ -37,9 +37,12 @@ Cuidados:
 | Criar anotação                     |    ✔     |        ✔        |
 | Editar/excluir carro               |          |        ✔        |
 | Editar/excluir qualquer anotação   |          |        ✔        |
-| Gerenciar usuários                 |          |        ✔        |
+| Criar e desativar usuários         |          |        ✔        |
+| Trocar a própria senha             |    ✔     |        ✔        |
 
-As regras ficam todas em [src/lib/permissions.ts](src/lib/permissions.ts).
+As regras ficam todas em [src/lib/permissions.ts](src/lib/permissions.ts). Ninguém troca a senha
+de outra pessoa pelo painel: quem esquecer a senha é recuperado pelo script `criar-mestre`
+(veja abaixo).
 
 ## Rodando localmente
 
@@ -54,8 +57,8 @@ npm run dev
 
 Acesse http://localhost:3000 e entre com o usuário criado.
 
-O comando `criar-mestre` também serve para recuperar o acesso: rodando com um usuário que já
-existe, ele troca a senha e deixa o usuário como mestre e ativo.
+O comando `criar-mestre` também recupera o acesso de quem esqueceu a senha: rodando com um
+usuário que já existe, ele define a nova senha e reativa o usuário, sem mudar o cargo.
 
 ## Variáveis de ambiente
 
@@ -120,5 +123,5 @@ src/
     pdf.ts                 montagem do PDF
     permissions.ts         quem pode fazer o quê
   proxy.ts                 bloqueia /painel para quem não está logado
-scripts/criar-mestre.mjs   cria ou recupera um usuário mestre
+scripts/criar-mestre.mjs   cria um mestre ou recupera o acesso de quem esqueceu a senha
 ```

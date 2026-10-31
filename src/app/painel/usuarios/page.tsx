@@ -6,8 +6,8 @@ import { requireUser } from "@/lib/auth";
 import { getCollections } from "@/lib/db";
 import { can } from "@/lib/permissions";
 import { ROLE_LABEL } from "@/lib/types";
-import { resetPassword, setUserActive } from "../actions";
-import { CreateUserForm, ResetPasswordForm } from "./user-forms";
+import { setUserActive } from "../actions";
+import { CreateUserForm } from "./user-forms";
 
 export const metadata: Metadata = { title: "Usuários" };
 
@@ -40,16 +40,13 @@ export default async function UsersPage() {
                   {!u.active && " · desativado"}
                 </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <ResetPasswordForm action={resetPassword.bind(null, id)} />
-                {!isMe && (
-                  <form action={setUserActive.bind(null, id, !u.active)}>
-                    <SubmitButton pendingText="…" className={btnGhost}>
-                      {u.active ? "Desativar" : "Reativar"}
-                    </SubmitButton>
-                  </form>
-                )}
-              </div>
+              {!isMe && (
+                <form action={setUserActive.bind(null, id, !u.active)}>
+                  <SubmitButton pendingText="…" className={btnGhost}>
+                    {u.active ? "Desativar" : "Reativar"}
+                  </SubmitButton>
+                </form>
+              )}
             </li>
           );
         })}

@@ -2,8 +2,7 @@
 
 import { useActionState } from "react";
 import { FormMessage, SubmitButton, fieldValue } from "@/components/form-bits";
-import { btnSecondary, inputClass, labelClass } from "@/components/ui";
-import type { FormState } from "@/lib/types";
+import { inputClass, labelClass } from "@/components/ui";
 import { createUser } from "../actions";
 
 export function CreateUserForm() {
@@ -47,34 +46,6 @@ export function CreateUserForm() {
       <div className="flex justify-end">
         <SubmitButton pendingText="Criando…">Criar usuário</SubmitButton>
       </div>
-    </form>
-  );
-}
-
-export function ResetPasswordForm({
-  action,
-}: {
-  action: (state: FormState, fd: FormData) => Promise<FormState>;
-}) {
-  const [state, formAction] = useActionState(action, undefined);
-
-  return (
-    <form action={formAction} className="flex flex-wrap items-center gap-2">
-      <input
-        name="password"
-        type="password"
-        required
-        minLength={6}
-        placeholder="Nova senha"
-        autoComplete="new-password"
-        aria-label="Nova senha"
-        className={`${inputClass} w-36 py-1 text-sm`}
-      />
-      <SubmitButton pendingText="…" className={`${btnSecondary} px-3 py-1`}>
-        Trocar senha
-      </SubmitButton>
-      {state?.error && <span className="text-xs text-red-600">{state.error}</span>}
-      {state?.success && <span className="text-xs text-emerald-600">{state.success}</span>}
     </form>
   );
 }

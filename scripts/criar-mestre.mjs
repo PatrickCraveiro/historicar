@@ -1,8 +1,10 @@
-// Cria (ou recupera) um usuário mestre.
-// Uso: npm run criar-mestre -- "Seu Nome" usuario senha
+// Cria um usuário mestre ou recupera o acesso de um usuário existente.
+// Uso: npm run criar-mestre -- "Nome" usuario senha
 //
-// Se o usuário já existir, a senha é trocada e ele vira mestre e ativo de novo.
-// Útil também para recuperar o acesso caso a senha seja esquecida.
+// - Usuário novo: é criado como mestre.
+// - Usuário que já existe: recebe a nova senha e é reativado, mantendo o cargo
+//   (um mecânico continua mecânico). É o caminho para quem esqueceu a senha,
+//   já que no painel cada um só troca a própria.
 import bcrypt from "bcryptjs";
 import { MongoClient } from "mongodb";
 
@@ -36,8 +38,8 @@ try {
   const result = await users.updateOne(
     { username },
     {
-      $set: { name, passwordHash, role: "master", active: true },
-      $setOnInsert: { username, createdAt: new Date() },
+      $set: { name, passwordHash, active: true },
+      $setOnInsert: { username, role: "master", createdAt: new Date() },
     },
     { upsert: true },
   );
@@ -45,7 +47,7 @@ try {
   console.log(
     result.upsertedCount
       ? `Usuário mestre "${username}" criado.`
-      : `Usuário "${username}" atualizado: agora é mestre, está ativo e com a nova senha.`,
+      : `Usuário "${username}" recuperado: nova senha definida e acesso reativado (cargo mantido).`,
   );
 } finally {
   await client.close();

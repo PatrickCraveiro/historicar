@@ -115,3 +115,22 @@ export const BellIcon = (p: IconProps) => (
     <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Icon>
 );
+
+export const ChevronDownIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </Icon>
+);
+
+export const KeyIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="7.5" cy="15.5" r="5.5" />
+    <path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3" />
+  </Icon>
+);
+
+export const LogOutIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+  </Icon>
+);

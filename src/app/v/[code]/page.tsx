@@ -13,14 +13,15 @@ import { PublicHistory } from "./public-history";
 // QR nunca precisa mudar. Não mostra dados do dono nem quem fez cada serviço.
 export default async function PublicCarPage({ params }: PageProps<"/v/[code]">) {
   const { code } = await params;
+  // Sempre gerada na hora do acesso (nunca pré-renderizada): os dados mudam a
+  // cada anotação, e o driver do Mongo usa a data atual internamente.
+  await connection();
   const car = await getCarByCode(code);
   if (!car) notFound();
 
   const records = await getRecords(car._id);
   const nextService = getNextService(records);
   const lastKm = records.find((r) => r.km != null)?.km;
-
-  await connection();
   const overdue = nextService?.date != null && nextService.date < todayISO();
 
   return (

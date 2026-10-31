@@ -256,22 +256,27 @@ export async function setUserActive(userId: string, active: boolean) {
   refreshPanel();
 }
 
-export async function resetPassword(userId: string, _prev: FormState, fd: FormData): Promise<FormState> {
-  const user = await requireUser();
-  if (!can.manageUsers(user)) return { error: NO_PERMISSION };
+// ---------------------------------------------------------------- Sessão
 
-  const password = String(fd.get("password") ?? "");
-  if (password.length < 6) return { error: "Mínimo de 6 caracteres." };
+/** Cada usuário troca só a própria senha, confirmando a atual. */
+export async function changeOwnPassword(_prev: FormState, fd: FormData): Promise<FormState> {
+  const user = await requireUser();
+  const current = String(fd.get("currentPassword") ?? "");
+  const password = String(fd.get("newPassword") ?? "");
+  const confirmation = String(fd.get("confirmPassword") ?? "");
+
+  if (password.length < 6) return { error: "A nova senha precisa ter pelo menos 6 caracteres." };
+  if (password !== confirmation) return { error: "A confirmação está diferente da nova senha." };
 
   const { users } = await getCollections();
-  await users.updateOne(
-    { _id: parseId(userId) },
-    { $set: { passwordHash: await bcrypt.hash(password, 10) } },
-  );
+  const doc = await users.findOne({ _id: parseId(user.id) }, { projection: { passwordHash: 1 } });
+  if (!doc || !(await bcrypt.compare(current, doc.passwordHash))) {
+    return { error: "A senha atual está incorreta." };
+  }
+
+  await users.updateOne({ _id: doc._id }, { $set: { passwordHash: await bcrypt.hash(password, 10) } });
   return { success: "Senha alterada." };
 }
-
-// ---------------------------------------------------------------- Sessão
 
 export async function logout() {
   await endSession();
