@@ -29,7 +29,7 @@ if (!process.env.MONGODB_URI) {
 const client = new MongoClient(process.env.MONGODB_URI);
 try {
   await client.connect();
-  const users = client.db(process.env.MONGODB_DB || "historico_veicular").collection("users");
+  const users = client.db(process.env.MONGODB_DB || "historicar").collection("users");
   await users.createIndex({ username: 1 }, { unique: true });
 
   const passwordHash = await bcrypt.hash(password, 10);

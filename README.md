@@ -1,4 +1,4 @@
-# Histórico Veicular
+# Historicar
 
 Sistema para a oficina registrar o histórico de manutenção de cada carro e gerar um
 **QR code fixo** para colar no para-brisa. Quem escaneia vê o histórico atualizado e pode
@@ -15,7 +15,7 @@ Stack: Next.js 16 (App Router) + MongoDB, hospedável de graça na Vercel com o 
 
 ## Como o QR fica fixo
 
-O QR guarda só um link, como `https://seu-site.vercel.app/v/9n6hvqmcar`. Esse código é gerado
+O QR guarda só um link, como `https://historicar.vercel.app/v/9n6hvqmcar`. Esse código é gerado
 uma vez no cadastro do carro e nunca muda. A página busca os dados no banco a cada acesso,
 então dá para adicionar e editar anotações à vontade sem reimprimir o adesivo.
 
@@ -62,7 +62,7 @@ existe, ele troca a senha e deixa o usuário como mestre e ativo.
 | Variável         | Para que serve                                                                 |
 | ---------------- | ------------------------------------------------------------------------------ |
 | `MONGODB_URI`    | String de conexão do MongoDB Atlas                                             |
-| `MONGODB_DB`     | Nome do banco (padrão `historico_veicular`)                                    |
+| `MONGODB_DB`     | Nome do banco (padrão `historicar`)                                    |
 | `SESSION_SECRET` | Segredo do login, com no mínimo 32 caracteres aleatórios                       |
 | `APP_URL`        | Endereço definitivo do site, sem barra no final. É o que vai dentro do QR      |
 | `SHOP_NAME`      | Nome da oficina (painel, página pública, adesivo e PDF)                        |
@@ -87,10 +87,11 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 1. Suba o projeto para um repositório no GitHub.
 2. Em https://vercel.com, importe o repositório.
-3. **Escolha bem o nome do projeto**, porque ele vira o endereço (`nome-do-projeto.vercel.app`)
-   que vai dentro dos QRs.
+3. Mantenha o nome do projeto como **`historicar`**: ele vira o endereço
+   (`historicar.vercel.app`) que vai dentro dos QRs. Se a Vercel disser que o nome já está em
+   uso, escolha outro antes de imprimir qualquer adesivo.
 4. Em **Settings > Environment Variables**, cadastre todas as variáveis da tabela acima, com
-   `APP_URL=https://nome-do-projeto.vercel.app`.
+   `APP_URL=https://historicar.vercel.app`.
 5. Faça um novo deploy para as variáveis valerem.
 6. Crie o primeiro usuário mestre rodando `npm run criar-mestre` na sua máquina, com o
    `.env.local` apontando para o mesmo `MONGODB_URI` do Atlas.

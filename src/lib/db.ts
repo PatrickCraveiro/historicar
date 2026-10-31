@@ -2,7 +2,7 @@ import "server-only";
 import { MongoClient, type Db } from "mongodb";
 import type { CarDoc, RecordDoc, UserDoc } from "./types";
 
-const DB_NAME = process.env.MONGODB_DB || "historico_veicular";
+const DB_NAME = process.env.MONGODB_DB || "historicar";
 
 // Reaproveita a conexão entre requisições (e entre hot reloads em dev).
 const globalForMongo = globalThis as unknown as {
