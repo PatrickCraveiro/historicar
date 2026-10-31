@@ -37,7 +37,7 @@ function refreshPanel() {
   revalidatePath("/painel", "layout");
 }
 
-/** Mantém no carro a data da anotação mais recente (usada para ordenar a lista). */
+/** Mantém no automóvel a data da anotação mais recente (usada para ordenar a lista). */
 async function syncLastRecordDate(carId: ObjectId) {
   const { cars, records } = await getCollections();
   const latest = await records.findOne({ carId }, { sort: { date: -1 }, projection: { date: 1 } });
@@ -49,7 +49,7 @@ async function syncLastRecordDate(carId: ObjectId) {
   );
 }
 
-// ---------------------------------------------------------------- Carros
+// ---------------------------------------------------------------- Automóveis
 
 export async function createCar(_prev: FormState, fd: FormData): Promise<FormState> {
   const user = await requireUser();
@@ -81,12 +81,12 @@ export async function createCar(_prev: FormState, fd: FormData): Promise<FormSta
       inserted = true;
     } catch (err) {
       if (isDuplicateKey(err, "plate")) {
-        return { error: "Já existe um carro cadastrado com essa placa.", values: formValues(fd) };
+        return { error: "Já existe um automóvel cadastrado com essa placa.", values: formValues(fd) };
       }
       if (!isDuplicateKey(err, "publicCode")) throw err;
     }
   }
-  if (!inserted) throw new Error("Não foi possível gerar um código único para o carro.");
+  if (!inserted) throw new Error("Não foi possível gerar um código único para o automóvel.");
 
   refreshPanel();
   redirect(`/painel/carros/${carId}`);
@@ -110,7 +110,7 @@ export async function updateCar(carId: string, _prev: FormState, fd: FormData): 
     await cars.updateOne({ _id: parseId(carId) }, { $set: { ...$set, updatedAt: new Date() }, $unset });
   } catch (err) {
     if (isDuplicateKey(err, "plate")) {
-      return { error: "Já existe outro carro cadastrado com essa placa.", values: formValues(fd) };
+      return { error: "Já existe outro automóvel cadastrado com essa placa.", values: formValues(fd) };
     }
     throw err;
   }
@@ -149,7 +149,7 @@ export async function createRecord(carId: string, _prev: FormState, fd: FormData
   const _id = parseId(carId);
   const { cars, records } = await getCollections();
   if (!(await cars.findOne({ _id }, { projection: { _id: 1 } }))) {
-    return { error: "Carro não encontrado." };
+    return { error: "Automóvel não encontrado." };
   }
   await records.insertOne({
     _id: new ObjectId(),

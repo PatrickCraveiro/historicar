@@ -1,6 +1,6 @@
 import "server-only";
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage, type RGB } from "pdf-lib";
-import { carTitle, formatDate, formatKm, formatPlate, nextServiceText } from "./format";
+import { carTitle, formatDate, formatKm, formatPlate, nextServiceText, vehicleTypeLabel } from "./format";
 import type { CarDoc, RecordDoc } from "./types";
 
 const PAGE: [number, number] = [595.28, 841.89]; // A4
@@ -12,8 +12,8 @@ const COLORS = {
   text: rgb(0.06, 0.09, 0.16),
   muted: rgb(0.39, 0.45, 0.55),
   light: rgb(0.89, 0.91, 0.94),
-  accent: rgb(0.76, 0.25, 0.05),
-  accentBg: rgb(1, 0.97, 0.93),
+  accent: rgb(0.114, 0.306, 0.847), // azul da placa (#1d4ed8)
+  accentBg: rgb(0.937, 0.965, 1),
   check: rgb(0.02, 0.59, 0.41),
 };
 
@@ -155,7 +155,7 @@ export async function buildCarPdf(input: {
   // Veículo
   w.text(carTitle(car), { font: bold, size: 16 });
   w.gap(2);
-  w.text([`Placa: ${formatPlate(car.plate)}`, car.color && `Cor: ${car.color}`].filter(Boolean).join("   ·   "), {
+  w.text([`Tipo: ${vehicleTypeLabel(car)}`, `Placa: ${formatPlate(car.plate)}`, car.color && `Cor: ${car.color}`].filter(Boolean).join("   ·   "), {
     font: regular,
     size: 11,
   });

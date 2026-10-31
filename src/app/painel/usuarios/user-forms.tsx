@@ -36,7 +36,8 @@ export function CreateUserForm() {
         </div>
         <div>
           <label htmlFor="role" className={labelClass}>Tipo</label>
-          <select id="role" name="role" defaultValue={value("role") || "mechanic"} className={inputClass}>
+          {/* key: recria o select com o valor enviado; sem isso, ao dar erro ele voltaria ao padrão */}
+          <select key={value("role") || "mechanic"} id="role" name="role" defaultValue={value("role") || "mechanic"} className={inputClass}>
             <option value="mechanic">Mecânico (só cria anotações)</option>
             <option value="master">Mecânico mestre (pode tudo)</option>
           </select>

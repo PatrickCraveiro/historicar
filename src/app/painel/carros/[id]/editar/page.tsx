@@ -10,7 +10,7 @@ import { getCarById } from "@/lib/data";
 import { can } from "@/lib/permissions";
 import { deleteCar, updateCar } from "../../../actions";
 
-export const metadata: Metadata = { title: "Editar carro" };
+export const metadata: Metadata = { title: "Editar automóvel" };
 
 export default async function EditCarPage({ params }: PageProps<"/painel/carros/[id]/editar">) {
   const user = await requireUser();
@@ -25,11 +25,12 @@ export default async function EditCarPage({ params }: PageProps<"/painel/carros/
       <AppLink href={`/painel/carros/${id}`} className={btnGhost}>
         <ArrowLeftIcon /> Voltar
       </AppLink>
-      <h1 className="text-2xl font-bold text-slate-900">Editar carro</h1>
+      <h1 className="text-2xl font-bold text-slate-900">Editar automóvel</h1>
 
       <CarForm
         action={updateCar.bind(null, id)}
         initial={{
+          type: car.type,
           plate: car.plate,
           brand: car.brand,
           model: car.model,
@@ -46,17 +47,17 @@ export default async function EditCarPage({ params }: PageProps<"/painel/carros/
       {can.deleteCar(user) && (
         <section className={`${card} mt-10 flex flex-wrap items-center justify-between gap-4 border-red-200 p-5`}>
           <div>
-            <h2 className="font-semibold text-red-700">Excluir carro</h2>
+            <h2 className="font-semibold text-red-700">Excluir automóvel</h2>
             <p className="text-sm text-slate-500">
-              Apaga o carro e todo o histórico. O QR code colado no carro deixa de funcionar.
+              Apaga o automóvel e todo o histórico. O QR code colado nele deixa de funcionar.
             </p>
           </div>
           <form action={deleteCar.bind(null, id)}>
             <ConfirmButton
-              message="Excluir este carro e TODAS as anotações? O QR code vai parar de funcionar. Não dá para desfazer."
+              message="Excluir este automóvel e TODAS as anotações? O QR code vai parar de funcionar. Não dá para desfazer."
               className={btnDanger}
             >
-              <TrashIcon /> Excluir carro
+              <TrashIcon /> Excluir automóvel
             </ConfirmButton>
           </form>
         </section>

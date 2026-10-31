@@ -14,7 +14,7 @@ import { PlateBadge } from "@/components/plate-badge";
 import { btnAccent, btnGhost, btnSecondary, card } from "@/components/ui";
 import { requireUser } from "@/lib/auth";
 import { getCarById, getNextService, getRecords, toRecordView } from "@/lib/data";
-import { carTitle, nextServiceText } from "@/lib/format";
+import { carTitle, nextServiceText, vehicleTypeLabel } from "@/lib/format";
 import { can } from "@/lib/permissions";
 import type { RecordView } from "@/lib/types";
 import { deleteRecord } from "../../actions";
@@ -35,7 +35,7 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
   return (
     <div className="space-y-6">
       <AppLink href="/painel" className={btnGhost}>
-        <ArrowLeftIcon /> Carros
+        <ArrowLeftIcon /> Automóveis
       </AppLink>
 
       <section className={`${card} space-y-4 p-5`}>
@@ -43,7 +43,7 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
           <div className="space-y-2">
             <PlateBadge plate={car.plate} />
             <h1 className="text-2xl font-bold text-slate-900">{carTitle(car)}</h1>
-            {car.color && <p className="text-slate-500">{car.color}</p>}
+            <p className="text-slate-500">{[vehicleTypeLabel(car), car.color].filter(Boolean).join(" · ")}</p>
           </div>
           {can.editCar(user) && (
             <AppLink href={`/painel/carros/${id}/editar`} spinner className={btnSecondary}>
@@ -81,7 +81,7 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
       </section>
 
       {nextService && (
-        <div className="flex items-center gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4 text-orange-800">
+        <div className="flex items-center gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-blue-800">
           <BellIcon className="size-5 shrink-0" />
           <p>
             <span className="font-semibold">Próxima revisão:</span> {nextServiceText(nextService)}
@@ -104,7 +104,10 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
   // Rodapé de cada anotação: quem registrou e, conforme a permissão, Editar/Excluir.
   function renderFooter(record: RecordView) {
     return (
-      <footer className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500">
+      <footer
+        key={record.id}
+        className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500"
+      >
         <span>
           Por {record.createdByName}
           {record.updatedByName && ` · editado por ${record.updatedByName}`}

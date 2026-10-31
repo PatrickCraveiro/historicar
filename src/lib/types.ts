@@ -30,8 +30,23 @@ export interface Author {
   name: string;
 }
 
+export const VEHICLE_TYPES = ["carro", "moto", "caminhonete", "caminhao", "van", "onibus", "outro"] as const;
+export type VehicleType = (typeof VEHICLE_TYPES)[number];
+
+export const VEHICLE_TYPE_LABEL: Record<VehicleType, string> = {
+  carro: "Carro",
+  moto: "Moto",
+  caminhonete: "Caminhonete",
+  caminhao: "Caminhão",
+  van: "Van",
+  onibus: "Ônibus",
+  outro: "Outro",
+};
+
 export interface CarDoc {
   _id: ObjectId;
+  /** Tipo de veículo. Cadastros antigos não têm o campo e contam como carro. */
+  type?: VehicleType;
   /** Código aleatório usado no link do QR. Gerado uma vez e nunca muda. */
   publicCode: string;
   /** Placa normalizada: maiúscula, sem hífen (ABC1234 ou ABC1D23). */

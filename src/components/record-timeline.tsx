@@ -23,7 +23,7 @@ export function RecordTimeline({
         <li key={record.id} className="relative">
           <span
             className={`absolute -left-[33px] top-5 size-4 rounded-full border-4 border-white ring-1 ring-slate-200 ${
-              record.id === latestId ? "bg-orange-500" : "bg-slate-400"
+              record.id === latestId ? "bg-blue-700" : "bg-slate-400"
             }`}
           />
           <RecordCard record={record} footer={renderFooter?.(record)} />
@@ -68,7 +68,7 @@ function RecordCard({ record, footer }: { record: RecordView; footer?: ReactNode
       )}
 
       {hasNext && (
-        <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-orange-700">
+        <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-blue-700">
           <BellIcon className="size-4" />
           Próxima revisão: {nextServiceText({ km: record.nextServiceKm, date: record.nextServiceDate })}
         </p>

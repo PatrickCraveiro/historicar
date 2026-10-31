@@ -6,7 +6,7 @@ import { btnGhost } from "@/components/ui";
 import { requireUser } from "@/lib/auth";
 import { createCar } from "../../actions";
 
-export const metadata: Metadata = { title: "Novo carro" };
+export const metadata: Metadata = { title: "Novo automóvel" };
 
 export default async function NewCarPage() {
   await requireUser();
@@ -14,10 +14,10 @@ export default async function NewCarPage() {
   return (
     <div className="space-y-4">
       <AppLink href="/painel" className={btnGhost}>
-        <ArrowLeftIcon /> Carros
+        <ArrowLeftIcon /> Automóveis
       </AppLink>
-      <h1 className="text-2xl font-bold text-slate-900">Novo carro</h1>
-      <CarForm action={createCar} submitLabel="Cadastrar carro" cancelHref="/painel" />
+      <h1 className="text-2xl font-bold text-slate-900">Novo automóvel</h1>
+      <CarForm action={createCar} submitLabel="Cadastrar automóvel" cancelHref="/painel" />
     </div>
   );
 }

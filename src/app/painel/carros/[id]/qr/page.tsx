@@ -56,7 +56,7 @@ export default async function QrPage({ params }: PageProps<"/painel/carros/[id]/
           className={`${card} flex w-72 flex-col items-center gap-3 p-5 text-center print:w-[7cm] print:rounded-xl print:border-2 print:border-slate-900 print:p-4 print:shadow-none`}
         >
           <div className="flex items-center gap-2 font-bold text-slate-900">
-            <WrenchIcon className="size-4 text-orange-500" />
+            <WrenchIcon className="size-4 text-blue-700" />
             <span>{SHOP_NAME}</span>
           </div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Histórico de manutenção</p>

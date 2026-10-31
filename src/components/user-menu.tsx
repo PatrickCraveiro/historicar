@@ -10,7 +10,7 @@ import { Spinner } from "./spinner";
 
 /**
  * Avatar com a inicial; ao clicar, abre o menu com "Minha senha" e "Sair".
- * No celular, o menu também traz "Carros" e "Usuários", que saem do cabeçalho.
+ * No celular, o menu também traz "Automóveis" e "Usuários", que saem do cabeçalho.
  */
 export function UserMenu({ name, canManageUsers }: { name: string; canManageUsers: boolean }) {
   const pathname = usePathname();
@@ -53,7 +53,7 @@ export function UserMenu({ name, canManageUsers }: { name: string; canManageUser
         aria-label={`Menu de ${name}`}
         className="flex min-h-11 items-center gap-2 rounded-full py-1 pl-1 pr-2 hover:bg-slate-100 sm:min-h-0"
       >
-        <span className="flex size-8 items-center justify-center rounded-full bg-orange-100 text-sm font-semibold text-orange-700">
+        <span className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
           {firstName.charAt(0).toUpperCase()}
         </span>
         <span className="hidden text-sm font-medium text-slate-700 sm:inline">{firstName}</span>
@@ -68,7 +68,7 @@ export function UserMenu({ name, canManageUsers }: { name: string; canManageUser
           <p className="truncate border-b border-slate-100 px-4 py-2 text-sm font-medium text-slate-900">{name}</p>
           <div className="border-b border-slate-100 sm:hidden">
             <AppLink href="/painel" role="menuitem" onClick={closeIfCurrent("/painel")} className={itemClass}>
-              <CarIcon className="size-4 text-slate-400" /> Carros
+              <CarIcon className="size-4 text-slate-400" /> Automóveis
             </AppLink>
             {canManageUsers && (
               <AppLink

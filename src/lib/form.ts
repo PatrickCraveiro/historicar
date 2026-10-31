@@ -1,7 +1,7 @@
 import "server-only";
 import { MongoServerError } from "mongodb";
 import { isValidPlate, normalizePlate } from "./format";
-import type { CarDoc, RecordDoc } from "./types";
+import { VEHICLE_TYPES, type CarDoc, type RecordDoc, type VehicleType } from "./types";
 
 /** Erro de validação: a mensagem é mostrada para o usuário no formulário. */
 export class ValidationError extends Error {}
@@ -56,15 +56,19 @@ export function formValues(fd: FormData): Record<string, string | string[]> {
 
 export type CarInput = Pick<
   CarDoc,
-  "plate" | "brand" | "model" | "year" | "color" | "ownerName" | "ownerPhone" | "notes"
+  "type" | "plate" | "brand" | "model" | "year" | "color" | "ownerName" | "ownerPhone" | "notes"
 >;
 
 export function parseCarForm(fd: FormData): CarInput {
+  const type = text(fd, "type") as VehicleType;
+  if (!VEHICLE_TYPES.includes(type)) throw new ValidationError("Escolha o tipo de veículo.");
+
   const plate = normalizePlate(required(fd, "plate", "Placa", 10));
   if (!isValidPlate(plate)) {
     throw new ValidationError("Placa inválida. Use o formato ABC-1234 ou ABC1D23.");
   }
   return {
+    type,
     plate,
     brand: required(fd, "brand", "Marca", 40),
     model: required(fd, "model", "Modelo", 60),

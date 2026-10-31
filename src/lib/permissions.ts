@@ -5,7 +5,7 @@ import type { SessionUser } from "./types";
  *
  * - Mecânico mestre: faz tudo, inclusive editar/excluir anotações de outros
  *   mecânicos e gerenciar usuários.
- * - Mecânico: só cria (carros e anotações). Não edita nem exclui nada.
+ * - Mecânico: só cria (automóveis e anotações). Não edita nem exclui nada.
  */
 type Rule = (user: SessionUser) => boolean;
 

@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `Historicar · ${SHOP_NAME}`,
     short_name: "Historicar",
-    description: "Histórico de manutenção dos carros da oficina",
+    description: "Histórico de manutenção dos automóveis da oficina",
     lang: "pt-BR",
     start_url: "/painel",
     scope: "/",

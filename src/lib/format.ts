@@ -1,4 +1,5 @@
 // Funções puras de formatação, usadas tanto no servidor quanto no navegador.
+import { VEHICLE_TYPE_LABEL, type VehicleType } from "./types";
 
 export const TIMEZONE = "America/Sao_Paulo";
 
@@ -45,4 +46,9 @@ export function nextServiceText(next: { km?: number; date?: string }): string {
   return [next.km != null ? formatKm(next.km) : "", formatDate(next.date)]
     .filter(Boolean)
     .join(" ou ");
+}
+
+/** "Moto", "Caminhão"... Cadastros antigos, sem tipo, contam como carro. */
+export function vehicleTypeLabel(car: { type?: VehicleType }): string {
+  return VEHICLE_TYPE_LABEL[car.type ?? "carro"];
 }

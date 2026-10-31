@@ -6,7 +6,7 @@ import { DEFAULT_ORDER, SortToggle, sortRecords, type SortOrder } from "@/compon
 import type { RecordView } from "@/lib/types";
 
 /**
- * Histórico do carro no painel, com o botão de inverter a ordem por data.
+ * Histórico do automóvel no painel, com o botão de inverter a ordem por data.
  * Os rodapés (autor, Editar/Excluir) vêm prontos do servidor, um por anotação.
  */
 export function CarHistory({

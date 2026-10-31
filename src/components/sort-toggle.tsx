@@ -5,7 +5,7 @@ import { btnSecondary } from "./ui";
 
 export type SortOrder = "desc" | "asc";
 
-/** O histórico começa pelo serviço mais antigo, contando a vida do carro em ordem. */
+/** O histórico começa pelo serviço mais antigo, contando a vida do automóvel em ordem. */
 export const DEFAULT_ORDER: SortOrder = "asc";
 
 /** Alterna a ordem do histórico: mais recentes primeiro ou mais antigos primeiro. */

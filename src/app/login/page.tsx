@@ -11,7 +11,7 @@ export default function LoginPage() {
     <main className="flex min-h-dvh items-center justify-center bg-slate-100 p-4">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-slate-900 text-orange-400">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-blue-700 text-white">
             <WrenchIcon className="size-6" />
           </span>
           <div>

@@ -2,7 +2,7 @@ import "server-only";
 import { ObjectId, type Filter } from "mongodb";
 import { getCollections } from "./db";
 import { normalizePlate } from "./format";
-import type { CarDoc, RecordDoc, RecordView } from "./types";
+import { VEHICLE_TYPES, VEHICLE_TYPE_LABEL, type CarDoc, type RecordDoc, type RecordView } from "./types";
 
 function toObjectId(id: string): ObjectId | null {
   return ObjectId.isValid(id) && id.length === 24 ? new ObjectId(id) : null;
@@ -10,6 +10,10 @@ function toObjectId(id: string): ObjectId | null {
 
 function escapeRegex(text: string) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function withoutAccents(text: string) {
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 
 export async function listCars(query?: string): Promise<CarDoc[]> {
@@ -21,6 +25,10 @@ export async function listCars(query?: string): Promise<CarDoc[]> {
     const or: Filter<CarDoc>[] = [{ brand: regex }, { model: regex }, { ownerName: regex }];
     const plate = normalizePlate(q);
     if (plate) or.push({ plate: new RegExp(escapeRegex(plate)) });
+    // Busca pelo tipo ("moto", "caminhao"...), com ou sem acento.
+    const types = VEHICLE_TYPES.filter((type) => withoutAccents(VEHICLE_TYPE_LABEL[type]).includes(withoutAccents(q)));
+    if (types.length) or.push({ type: { $in: types } });
+    if (types.includes("carro")) or.push({ type: { $exists: false } }); // cadastros antigos
     filter.$or = or;
   }
   return cars.find(filter).sort({ lastRecordDate: -1, updatedAt: -1 }).limit(200).toArray();
@@ -39,7 +47,7 @@ export async function getCarByCode(code: string): Promise<CarDoc | null> {
   return cars.findOne({ publicCode: code });
 }
 
-/** Anotações do carro, da mais recente para a mais antiga. */
+/** Anotações do automóvel, da mais recente para a mais antiga. */
 export async function getRecords(carId: ObjectId): Promise<RecordDoc[]> {
   const { records } = await getCollections();
   return records.find({ carId }).sort({ date: -1, createdAt: -1 }).toArray();

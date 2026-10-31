@@ -100,7 +100,7 @@ export function ItemsInput({ defaultItems = [] }: { defaultItems?: string[] }) {
               key={suggestion}
               type="button"
               onClick={() => add(suggestion)}
-              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600 transition active:scale-95 sm:px-2.5 sm:py-1 sm:text-xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"
+              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600 transition active:scale-95 sm:px-2.5 sm:py-1 sm:text-xs hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
             >
               + {suggestion}
             </button>

@@ -6,7 +6,7 @@ import { PlateBadge } from "@/components/plate-badge";
 import { card } from "@/components/ui";
 import { SHOP_NAME } from "@/lib/config";
 import { getCarByCode, getNextService, getRecords, toRecordView } from "@/lib/data";
-import { carTitle, formatDate, formatKm, nextServiceText, todayISO } from "@/lib/format";
+import { carTitle, formatDate, formatKm, nextServiceText, todayISO, vehicleTypeLabel } from "@/lib/format";
 import { PublicHistory } from "./public-history";
 
 // Página que o QR code abre. Busca os dados no banco a cada acesso, por isso o
@@ -28,7 +28,7 @@ export default async function PublicCarPage({ params }: PageProps<"/v/[code]">) 
     <div className="min-h-dvh bg-slate-100">
       <header className="bg-slate-900 pb-20 pt-6 text-white">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-white/10 text-orange-400">
+          <span className="flex size-10 items-center justify-center rounded-xl bg-blue-700 text-white">
             <WrenchIcon className="size-5" />
           </span>
           <div>
@@ -44,7 +44,7 @@ export default async function PublicCarPage({ params }: PageProps<"/v/[code]">) 
             <PlateBadge plate={car.plate} size="lg" />
             <div>
               <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">{carTitle(car)}</h1>
-              {car.color && <p className="text-slate-500">{car.color}</p>}
+              <p className="text-slate-500">{[vehicleTypeLabel(car), car.color].filter(Boolean).join(" · ")}</p>
             </div>
           </div>
 
@@ -62,7 +62,7 @@ export default async function PublicCarPage({ params }: PageProps<"/v/[code]">) 
         {nextService && (
           <div
             className={`flex items-center gap-3 rounded-2xl border p-4 ${
-              overdue ? "border-red-200 bg-red-50 text-red-800" : "border-orange-200 bg-orange-50 text-orange-800"
+              overdue ? "border-red-200 bg-red-50 text-red-800" : "border-blue-200 bg-blue-50 text-blue-800"
             }`}
           >
             <BellIcon className="size-5 shrink-0" />

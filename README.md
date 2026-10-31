@@ -1,10 +1,10 @@
 # Historicar
 
-Sistema para a oficina registrar o histórico de manutenção de cada carro e gerar um
+Sistema para a oficina registrar o histórico de manutenção de cada automóvel (carro, moto, caminhão…) e gerar um
 **QR code fixo** para colar no para-brisa. Quem escaneia vê o histórico atualizado e pode
 baixar um PDF.
 
-- **Painel do mecânico** (`/painel`, com login): cadastra carros e anotações (data, km, lista
+- **Painel do mecânico** (`/painel`, com login): cadastra automóveis e anotações (data, km, lista
   de serviços, observações e próxima revisão).
 - **Página pública** (`/v/<código>`): é o que o QR abre. Mostra o histórico em linha do tempo,
   com pesquisa e um botão para baixar o PDF.
@@ -16,7 +16,7 @@ Stack: Next.js 16 (App Router) + MongoDB, hospedável de graça na Vercel com o 
 ## Como o QR fica fixo
 
 O QR guarda só um link, como `https://historicar.vercel.app/v/9n6hvqmcar`. Esse código é gerado
-uma vez no cadastro do carro e nunca muda. A página busca os dados no banco a cada acesso,
+uma vez no cadastro do automóvel e nunca muda. A página busca os dados no banco a cada acesso,
 então dá para adicionar e editar anotações à vontade sem reimprimir o adesivo.
 
 Cuidados:
@@ -24,7 +24,7 @@ Cuidados:
 - **O endereço do site também faz parte do QR.** Defina `APP_URL` com o endereço definitivo
   antes de imprimir adesivos de verdade. Se o site mudar de endereço, os QRs já colados param
   de abrir.
-- **Excluir um carro quebra o QR dele.** O painel avisa antes de excluir.
+- **Excluir um automóvel quebra o QR dele.** O painel avisa antes de excluir.
 - A página pública não mostra o nome e o telefone do dono, nem quem fez cada serviço.
   Qualquer pessoa que escanear o para-brisa consegue abrir essa página.
 
@@ -32,10 +32,10 @@ Cuidados:
 
 | Ação                               | Mecânico | Mecânico mestre |
 | ---------------------------------- | :------: | :-------------: |
-| Ver carros e histórico             |    ✔     |        ✔        |
-| Cadastrar carro                    |    ✔     |        ✔        |
+| Ver automóveis e histórico         |    ✔     |        ✔        |
+| Cadastrar automóvel                |    ✔     |        ✔        |
 | Criar anotação                     |    ✔     |        ✔        |
-| Editar/excluir carro               |          |        ✔        |
+| Editar/excluir automóvel           |          |        ✔        |
 | Editar/excluir qualquer anotação   |          |        ✔        |
 | Criar e desativar usuários         |          |        ✔        |
 | Trocar a própria senha             |    ✔     |        ✔        |
@@ -120,7 +120,7 @@ os QRs.
 src/
   app/
     login/                 tela de login
-    painel/                área do mecânico (carros, anotações, QR, usuários)
+    painel/                área do mecânico (automóveis, anotações, QR, usuários)
       actions.ts           todas as ações que gravam no banco (Server Actions)
     v/[code]/              página pública que o QR abre
       pdf/route.ts         PDF gerado na hora

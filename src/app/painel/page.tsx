@@ -7,9 +7,9 @@ import { PlateBadge } from "@/components/plate-badge";
 import { btnAccent, btnSecondary, card, inputClass } from "@/components/ui";
 import { requireUser } from "@/lib/auth";
 import { listCars } from "@/lib/data";
-import { carTitle, formatDate } from "@/lib/format";
+import { carTitle, formatDate, vehicleTypeLabel } from "@/lib/format";
 
-export const metadata: Metadata = { title: "Carros" };
+export const metadata: Metadata = { title: "Automóveis" };
 
 export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
   await requireUser();
@@ -20,9 +20,9 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">Carros</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Automóveis</h1>
         <AppLink href="/painel/carros/novo" spinner className={btnAccent}>
-          <PlusIcon /> Novo carro
+          <PlusIcon /> Novo automóvel
         </AppLink>
       </div>
 
@@ -34,7 +34,7 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
             defaultValue={query}
             placeholder="Buscar por placa, modelo, marca ou dono"
             className={`${inputClass} pl-9`}
-            aria-label="Buscar carro"
+            aria-label="Buscar automóvel"
           />
         </div>
         <SubmitButton pendingText="Buscando…" className={btnSecondary}>
@@ -45,9 +45,9 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
       {cars.length === 0 ? (
         <div className={`${card} p-10 text-center text-slate-500`}>
           {query ? (
-            <>Nenhum carro encontrado para &ldquo;{query}&rdquo;.</>
+            <>Nenhum automóvel encontrado para &ldquo;{query}&rdquo;.</>
           ) : (
-            <>Nenhum carro cadastrado ainda. Clique em <strong>Novo carro</strong> para começar.</>
+            <>Nenhum automóvel cadastrado ainda. Clique em <strong>Novo automóvel</strong> para começar.</>
           )}
         </div>
       ) : (
@@ -56,13 +56,13 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
             <li key={car._id.toHexString()}>
               <AppLink
                 href={`/painel/carros/${car._id.toHexString()}`}
-                className={`${card} flex items-center gap-4 p-4 transition hover:border-orange-300 hover:shadow-md`}
+                className={`${card} flex items-center gap-4 p-4 transition hover:border-blue-300 hover:shadow-md`}
               >
                 <PlateBadge plate={car.plate} size="sm" />
                 <div className="min-w-0">
                   <p className="truncate font-semibold text-slate-900">{carTitle(car)}</p>
                   <p className="truncate text-sm text-slate-500">
-                    {car.lastRecordDate ? `Último serviço: ${formatDate(car.lastRecordDate)}` : "Sem anotações"}
+                    {vehicleTypeLabel(car)} · {car.lastRecordDate ? `Último serviço: ${formatDate(car.lastRecordDate)}` : "Sem anotações"}
                     {car.ownerName ? ` · ${car.ownerName}` : ""}
                   </p>
                 </div>
