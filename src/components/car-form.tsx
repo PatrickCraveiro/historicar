@@ -1,0 +1,110 @@
+"use client";
+
+import Link from "next/link";
+import { useActionState } from "react";
+import type { FormState } from "@/lib/types";
+import { FormMessage, SubmitButton, fieldValue } from "./form-bits";
+import { btnSecondary, card, inputClass, labelClass } from "./ui";
+
+export interface CarFormValues {
+  plate?: string;
+  brand?: string;
+  model?: string;
+  year?: number;
+  color?: string;
+  ownerName?: string;
+  ownerPhone?: string;
+  notes?: string;
+}
+
+export function CarForm({
+  action,
+  initial,
+  submitLabel,
+  cancelHref,
+}: {
+  action: (state: FormState, fd: FormData) => Promise<FormState>;
+  initial?: CarFormValues;
+  submitLabel: string;
+  cancelHref: string;
+}) {
+  const [state, formAction] = useActionState(action, undefined);
+  const value = (name: keyof CarFormValues) => fieldValue(state, initial as Record<string, unknown>, name);
+
+  return (
+    <form action={formAction} className="space-y-6">
+      <section className={`${card} space-y-4 p-5`}>
+        <h2 className="font-semibold text-slate-900">Veículo</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="plate" className={labelClass}>Placa *</label>
+            <input
+              id="plate"
+              name="plate"
+              required
+              maxLength={8}
+              defaultValue={value("plate")}
+              placeholder="ABC1D23"
+              autoCapitalize="characters"
+              className={`${inputClass} font-mono uppercase tracking-wider`}
+            />
+          </div>
+          <div>
+            <label htmlFor="year" className={labelClass}>Ano</label>
+            <input
+              id="year"
+              name="year"
+              type="number"
+              min={1900}
+              max={2100}
+              inputMode="numeric"
+              defaultValue={value("year")}
+              placeholder="2018"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="brand" className={labelClass}>Marca *</label>
+            <input id="brand" name="brand" required maxLength={40} defaultValue={value("brand")} placeholder="Volkswagen" className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="model" className={labelClass}>Modelo *</label>
+            <input id="model" name="model" required maxLength={60} defaultValue={value("model")} placeholder="Gol 1.0" className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="color" className={labelClass}>Cor</label>
+            <input id="color" name="color" maxLength={30} defaultValue={value("color")} placeholder="Prata" className={inputClass} />
+          </div>
+        </div>
+      </section>
+
+      <section className={`${card} space-y-4 p-5`}>
+        <div>
+          <h2 className="font-semibold text-slate-900">Dono e observações</h2>
+          <p className="text-sm text-slate-500">Só aparece aqui no painel. Não vai para a página do QR code.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="ownerName" className={labelClass}>Nome do dono</label>
+            <input id="ownerName" name="ownerName" maxLength={80} defaultValue={value("ownerName")} className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="ownerPhone" className={labelClass}>Telefone</label>
+            <input id="ownerPhone" name="ownerPhone" type="tel" maxLength={30} defaultValue={value("ownerPhone")} className={inputClass} />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="notes" className={labelClass}>Observações internas</label>
+          <textarea id="notes" name="notes" rows={3} maxLength={1000} defaultValue={value("notes")} className={inputClass} />
+        </div>
+      </section>
+
+      <FormMessage state={state} />
+
+      <div className="flex flex-wrap justify-end gap-2">
+        <Link href={cancelHref} className={btnSecondary}>Cancelar</Link>
+        <SubmitButton>{submitLabel}</SubmitButton>
+      </div>
+    </form>
+  );
+}
