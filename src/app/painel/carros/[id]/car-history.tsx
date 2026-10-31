@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { RecordTimeline } from "@/components/record-timeline";
-import { SortToggle, sortRecords, type SortOrder } from "@/components/sort-toggle";
+import { DEFAULT_ORDER, SortToggle, sortRecords, type SortOrder } from "@/components/sort-toggle";
 import type { RecordView } from "@/lib/types";
 
 /**
@@ -18,7 +18,7 @@ export function CarHistory({
   footers: Record<string, ReactNode>;
   empty: ReactNode;
 }) {
-  const [order, setOrder] = useState<SortOrder>("desc");
+  const [order, setOrder] = useState<SortOrder>(DEFAULT_ORDER);
 
   return (
     <section className="space-y-4">

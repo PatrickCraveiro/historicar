@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DownloadIcon, SearchIcon } from "@/components/icons";
 import { RecordTimeline } from "@/components/record-timeline";
-import { SortToggle, sortRecords, type SortOrder } from "@/components/sort-toggle";
+import { DEFAULT_ORDER, SortToggle, sortRecords, type SortOrder } from "@/components/sort-toggle";
 import { btnPrimary, card, inputClass } from "@/components/ui";
 import { formatDate } from "@/lib/format";
 import type { RecordView } from "@/lib/types";
@@ -21,7 +21,7 @@ function searchableText(record: RecordView) {
 
 export function PublicHistory({ records, pdfHref }: { records: RecordView[]; pdfHref: string }) {
   const [query, setQuery] = useState("");
-  const [order, setOrder] = useState<SortOrder>("desc");
+  const [order, setOrder] = useState<SortOrder>(DEFAULT_ORDER);
   const terms = normalize(query).split(/\s+/).filter(Boolean);
   const filtered = terms.length
     ? records.filter((record) => {

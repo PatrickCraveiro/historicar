@@ -206,7 +206,8 @@ export async function buildCarPdf(input: {
   const bullet = { text: "•", font: bold, color: COLORS.check, width: 12 };
   const pageContentHeight = PAGE[1] - MARGIN * 2 - FOOTER_SPACE;
 
-  for (const record of records) {
+  // Do mais antigo para o mais recente, como o histórico na tela.
+  for (const record of [...records].reverse()) {
     const blocks: { text: string; opts: TextOptions; gapBefore?: number }[] = [
       {
         text: [formatDate(record.date), record.km != null && formatKm(record.km)].filter(Boolean).join("   ·   "),
