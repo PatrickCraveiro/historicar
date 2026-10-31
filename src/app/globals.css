@@ -9,6 +9,72 @@
   color-scheme: light;
 }
 
+/* Barra de progresso no topo enquanto uma página abre. Começa invisível e só
+   aparece depois de 120ms, para não piscar em navegações rápidas. */
+.nav-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 60;
+  height: 3px;
+  background: #f97316;
+  box-shadow: 0 0 8px rgb(249 115 22 / 0.6);
+  transform-origin: left;
+  animation: nav-progress 10s cubic-bezier(0.05, 0.7, 0.1, 1) 120ms both;
+  pointer-events: none;
+}
+
+@keyframes nav-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.95);
+  }
+}
+
+/* Spinner dentro de links com cara de botão: também com atraso. */
+.link-spinner {
+  animation: fade-in 150ms ease-out 120ms both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Menu do usuário abrindo. */
+.menu-in {
+  transform-origin: top right;
+  animation: menu-in 120ms ease-out both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Quem pediu ao sistema para reduzir movimento vê os indicadores parados. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-progress {
+    animation: fade-in 0s 120ms both;
+    transform: scaleX(0.6);
+  }
+  .menu-in {
+    animation: none;
+  }
+}
+
 @media print {
   @page {
     margin: 12mm;

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
+import { AppLink } from "@/components/app-link";
 import { ArrowLeftIcon } from "@/components/icons";
 import { PlateBadge } from "@/components/plate-badge";
 import { RecordForm } from "@/components/record-form";
@@ -27,9 +27,9 @@ export default async function NewRecordPage({ params }: PageProps<"/painel/carro
 
   return (
     <div className="space-y-4">
-      <Link href={`/painel/carros/${id}`} className={btnGhost}>
+      <AppLink href={`/painel/carros/${id}`} className={btnGhost}>
         <ArrowLeftIcon /> Voltar
-      </Link>
+      </AppLink>
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-2xl font-bold text-slate-900">Nova anotação</h1>
         <PlateBadge plate={car.plate} size="sm" />

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AppLink } from "@/components/app-link";
 import { ConfirmButton } from "@/components/form-bits";
 import {
   ArrowLeftIcon,
@@ -32,9 +32,9 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
 
   return (
     <div className="space-y-6">
-      <Link href="/painel" className={btnGhost}>
+      <AppLink href="/painel" className={btnGhost}>
         <ArrowLeftIcon /> Carros
-      </Link>
+      </AppLink>
 
       <section className={`${card} space-y-4 p-5`}>
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -44,9 +44,9 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
             {car.color && <p className="text-slate-500">{car.color}</p>}
           </div>
           {can.editCar(user) && (
-            <Link href={`/painel/carros/${id}/editar`} className={btnSecondary}>
+            <AppLink href={`/painel/carros/${id}/editar`} spinner className={btnSecondary}>
               <PencilIcon /> Editar
-            </Link>
+            </AppLink>
           )}
         </div>
 
@@ -65,12 +65,12 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
         )}
 
         <div className="flex flex-wrap gap-2">
-          <Link href={`/painel/carros/${id}/anotacoes/nova`} className={btnAccent}>
+          <AppLink href={`/painel/carros/${id}/anotacoes/nova`} spinner className={btnAccent}>
             <PlusIcon /> Nova anotação
-          </Link>
-          <Link href={`/painel/carros/${id}/qr`} className={btnSecondary}>
+          </AppLink>
+          <AppLink href={`/painel/carros/${id}/qr`} spinner className={btnSecondary}>
             <QrIcon /> QR code
-          </Link>
+          </AppLink>
           <a href={`/v/${car.publicCode}`} target="_blank" className={btnSecondary}>
             <ExternalIcon /> Página pública
           </a>
@@ -107,9 +107,9 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
                 {(canEdit || canDelete) && (
                   <span className="flex gap-1">
                     {canEdit && (
-                      <Link href={`/painel/carros/${id}/anotacoes/${record.id}/editar`} className={btnGhost}>
+                      <AppLink href={`/painel/carros/${id}/anotacoes/${record.id}/editar`} className={btnGhost}>
                         <PencilIcon className="size-3.5" /> Editar
-                      </Link>
+                      </AppLink>
                     )}
                     {canDelete && (
                       <form action={deleteRecord.bind(null, id, record.id)}>

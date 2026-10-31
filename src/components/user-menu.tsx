@@ -1,23 +1,30 @@
 "use client";
 
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { logout } from "@/app/painel/actions";
+import { AppLink } from "./app-link";
 import { ChevronDownIcon, KeyIcon, LogOutIcon } from "./icons";
+import { Spinner } from "./spinner";
 
 /** Avatar com a inicial; ao clicar, abre o menu com "Minha senha" e "Sair". */
 export function UserMenu({ name }: { name: string }) {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  // Guarda em qual página o menu foi aberto: ao mudar de página ele fecha sozinho,
+  // e o link continua na tela mostrando o carregamento até a página nova abrir.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
   const ref = useRef<HTMLDivElement>(null);
 
   // Fecha ao clicar fora ou apertar Esc.
   useEffect(() => {
     if (!open) return;
     const onPointer = (e: PointerEvent) => {
-      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+      if (!ref.current?.contains(e.target as Node)) setOpenOn(null);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") setOpenOn(null);
     };
     document.addEventListener("pointerdown", onPointer);
     document.addEventListener("keydown", onKey);
@@ -35,7 +42,7 @@ export function UserMenu({ name }: { name: string }) {
     <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => setOpenOn(open ? null : pathname)}
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={`Menu de ${name}`}
@@ -51,19 +58,32 @@ export function UserMenu({ name }: { name: string }) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
+          className="menu-in absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
         >
           <p className="truncate border-b border-slate-100 px-4 py-2 text-sm font-medium text-slate-900">{name}</p>
-          <Link href="/painel/conta" role="menuitem" onClick={() => setOpen(false)} className={itemClass}>
+          <AppLink
+            href="/painel/conta"
+            role="menuitem"
+            onClick={() => pathname === "/painel/conta" && setOpenOn(null)}
+            className={itemClass}
+          >
             <KeyIcon className="size-4 text-slate-400" /> Minha senha
-          </Link>
+          </AppLink>
           <form action={logout}>
-            <button type="submit" role="menuitem" className={itemClass}>
-              <LogOutIcon className="size-4 text-slate-400" /> Sair
-            </button>
+            <LogoutButton className={itemClass} />
           </form>
         </div>
       )}
     </div>
+  );
+}
+
+function LogoutButton({ className }: { className: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" role="menuitem" disabled={pending} className={className}>
+      {pending ? <Spinner className="size-4 text-slate-400" /> : <LogOutIcon className="size-4 text-slate-400" />}
+      {pending ? "Saindo…" : "Sair"}
+    </button>
   );
 }

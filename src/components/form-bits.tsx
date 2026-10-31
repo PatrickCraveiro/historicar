@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 import type { FormState } from "@/lib/types";
+import { Spinner } from "./spinner";
 import { btnPrimary } from "./ui";
 
 export function SubmitButton({
@@ -16,8 +17,14 @@ export function SubmitButton({
 }) {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className={className}>
-      {pending ? pendingText : children}
+    <button type="submit" disabled={pending} aria-busy={pending} className={className}>
+      {pending ? (
+        <>
+          <Spinner /> {pendingText}
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }
@@ -26,10 +33,12 @@ export function SubmitButton({
 export function ConfirmButton({
   children,
   message,
+  pendingText = "Excluindo…",
   className,
 }: {
   children: ReactNode;
   message: string;
+  pendingText?: string;
   className?: string;
 }) {
   const { pending } = useFormStatus();
@@ -37,12 +46,19 @@ export function ConfirmButton({
     <button
       type="submit"
       disabled={pending}
+      aria-busy={pending}
       className={className}
       onClick={(e) => {
         if (!confirm(message)) e.preventDefault();
       }}
     >
-      {children}
+      {pending ? (
+        <>
+          <Spinner /> {pendingText}
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }

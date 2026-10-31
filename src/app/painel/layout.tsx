@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Suspense } from "react";
+import { AppLink } from "@/components/app-link";
 import { WrenchIcon } from "@/components/icons";
 import { UserMenu } from "@/components/user-menu";
 import { getCurrentUser } from "@/lib/auth";
@@ -11,12 +11,12 @@ export default function PainelLayout({ children }: LayoutProps<"/painel">) {
     <div className="min-h-dvh">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur print:hidden">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3">
-          <Link href="/painel" className="flex min-w-0 items-center gap-2 font-semibold text-slate-900">
+          <AppLink href="/painel" className="flex min-w-0 items-center gap-2 font-semibold text-slate-900">
             <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-orange-400">
               <WrenchIcon />
             </span>
             <span className="truncate">{SHOP_NAME}</span>
-          </Link>
+          </AppLink>
           <Suspense fallback={null}>
             <UserNav />
           </Suspense>
@@ -34,13 +34,13 @@ async function UserNav() {
   const linkClass = "rounded-md px-2 py-1 text-slate-600 hover:bg-slate-100 hover:text-slate-900";
   return (
     <nav className="flex shrink-0 items-center gap-1 text-sm sm:gap-2">
-      <Link href="/painel" className={linkClass}>
+      <AppLink href="/painel" className={linkClass}>
         Carros
-      </Link>
+      </AppLink>
       {can.manageUsers(user) && (
-        <Link href="/painel/usuarios" className={linkClass}>
+        <AppLink href="/painel/usuarios" className={linkClass}>
           Usuários
-        </Link>
+        </AppLink>
       )}
       <UserMenu name={user.name} />
     </nav>

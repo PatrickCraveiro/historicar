@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AppLink } from "@/components/app-link";
 import { CarForm } from "@/components/car-form";
 import { ArrowLeftIcon } from "@/components/icons";
 import { btnGhost } from "@/components/ui";
@@ -13,9 +13,9 @@ export default async function NewCarPage() {
 
   return (
     <div className="space-y-4">
-      <Link href="/painel" className={btnGhost}>
+      <AppLink href="/painel" className={btnGhost}>
         <ArrowLeftIcon /> Carros
-      </Link>
+      </AppLink>
       <h1 className="text-2xl font-bold text-slate-900">Novo carro</h1>
       <CarForm action={createCar} submitLabel="Cadastrar carro" cancelHref="/painel" />
     </div>

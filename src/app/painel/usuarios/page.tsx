@@ -42,7 +42,7 @@ export default async function UsersPage() {
               </div>
               {!isMe && (
                 <form action={setUserActive.bind(null, id, !u.active)}>
-                  <SubmitButton pendingText="…" className={btnGhost}>
+                  <SubmitButton pendingText={u.active ? "Desativando…" : "Reativando…"} className={btnGhost}>
                     {u.active ? "Desativar" : "Reativar"}
                   </SubmitButton>
                 </form>

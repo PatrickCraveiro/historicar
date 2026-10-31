@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { AppLink } from "@/components/app-link";
 import { CarForm } from "@/components/car-form";
 import { ConfirmButton } from "@/components/form-bits";
 import { ArrowLeftIcon, TrashIcon } from "@/components/icons";
@@ -22,9 +22,9 @@ export default async function EditCarPage({ params }: PageProps<"/painel/carros/
 
   return (
     <div className="space-y-4">
-      <Link href={`/painel/carros/${id}`} className={btnGhost}>
+      <AppLink href={`/painel/carros/${id}`} className={btnGhost}>
         <ArrowLeftIcon /> Voltar
-      </Link>
+      </AppLink>
       <h1 className="text-2xl font-bold text-slate-900">Editar carro</h1>
 
       <CarForm

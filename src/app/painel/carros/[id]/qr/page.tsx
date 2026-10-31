@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import QRCode from "qrcode";
+import { AppLink } from "@/components/app-link";
 import { ArrowLeftIcon, DownloadIcon, WrenchIcon } from "@/components/icons";
 import { PlateBadge } from "@/components/plate-badge";
 import { PrintButton } from "@/components/print-button";
@@ -29,9 +29,9 @@ export default async function QrPage({ params }: PageProps<"/painel/carros/[id]/
   return (
     <div className="space-y-6">
       <div className="space-y-4 print:hidden">
-        <Link href={`/painel/carros/${id}`} className={btnGhost}>
+        <AppLink href={`/painel/carros/${id}`} className={btnGhost}>
           <ArrowLeftIcon /> Voltar
-        </Link>
+        </AppLink>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">QR code</h1>
           <p className="text-slate-500">{carTitle(car)}</p>

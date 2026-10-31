@@ -8,9 +8,11 @@ export const inputClass =
 
 export const labelClass = "mb-1 block text-sm font-medium text-slate-700";
 
+// active:scale: o botão "afunda" de leve ao ser pressionado (bom no celular).
 const btn =
   "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold " +
-  "transition-colors disabled:cursor-not-allowed disabled:opacity-60";
+  "transition duration-150 active:scale-[0.97] motion-reduce:active:scale-100 " +
+  "disabled:cursor-wait disabled:opacity-70";
 
 export const btnPrimary = `${btn} bg-slate-900 text-white shadow-sm hover:bg-slate-700`;
 export const btnAccent = `${btn} bg-orange-500 text-white shadow-sm hover:bg-orange-600`;

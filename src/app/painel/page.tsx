@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Form from "next/form";
-import Link from "next/link";
+import { AppLink } from "@/components/app-link";
+import { SubmitButton } from "@/components/form-bits";
 import { PlusIcon, SearchIcon } from "@/components/icons";
 import { PlateBadge } from "@/components/plate-badge";
 import { btnAccent, btnSecondary, card, inputClass } from "@/components/ui";
@@ -20,9 +21,9 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-slate-900">Carros</h1>
-        <Link href="/painel/carros/novo" className={btnAccent}>
+        <AppLink href="/painel/carros/novo" spinner className={btnAccent}>
           <PlusIcon /> Novo carro
-        </Link>
+        </AppLink>
       </div>
 
       <Form action="/painel" className="flex gap-2">
@@ -36,7 +37,9 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
             aria-label="Buscar carro"
           />
         </div>
-        <button type="submit" className={btnSecondary}>Buscar</button>
+        <SubmitButton pendingText="Buscando…" className={btnSecondary}>
+          Buscar
+        </SubmitButton>
       </Form>
 
       {cars.length === 0 ? (
@@ -51,7 +54,7 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
         <ul className="grid gap-3 sm:grid-cols-2">
           {cars.map((car) => (
             <li key={car._id.toHexString()}>
-              <Link
+              <AppLink
                 href={`/painel/carros/${car._id.toHexString()}`}
                 className={`${card} flex items-center gap-4 p-4 transition hover:border-orange-300 hover:shadow-md`}
               >
@@ -63,7 +66,7 @@ export default async function CarsPage({ searchParams }: PageProps<"/painel">) {
                     {car.ownerName ? ` · ${car.ownerName}` : ""}
                   </p>
                 </div>
-              </Link>
+              </AppLink>
             </li>
           ))}
         </ul>

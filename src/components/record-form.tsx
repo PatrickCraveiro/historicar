@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { formatKm } from "@/lib/format";
 import type { FormState } from "@/lib/types";
+import { AppLink } from "./app-link";
 import { FormMessage, SubmitButton, fieldValue } from "./form-bits";
 import { ItemsInput } from "./items-input";
 import { btnSecondary, card, inputClass, labelClass } from "./ui";
@@ -118,7 +118,7 @@ export function RecordForm({
       <FormMessage state={state} />
 
       <div className="flex flex-wrap justify-end gap-2">
-        <Link href={cancelHref} className={btnSecondary}>Cancelar</Link>
+        <AppLink href={cancelHref} spinner className={btnSecondary}>Cancelar</AppLink>
         <SubmitButton>{submitLabel}</SubmitButton>
       </div>
     </form>
