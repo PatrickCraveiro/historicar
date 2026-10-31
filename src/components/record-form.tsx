@@ -6,6 +6,7 @@ import type { FormState } from "@/lib/types";
 import { AppLink } from "./app-link";
 import { FormActions, FormMessage, SubmitButton, fieldValue } from "./form-bits";
 import { ItemsInput } from "./items-input";
+import { KmInput } from "./km-input";
 import { btnSecondary, card, inputClass, labelClass } from "./ui";
 
 export interface RecordFormValues {
@@ -45,14 +46,11 @@ export function RecordForm({
           </div>
           <div>
             <label htmlFor="km" className={labelClass}>Quilometragem</label>
-            <input
+            <KmInput
               id="km"
               name="km"
-              inputMode="numeric"
-              pattern="[0-9.]*"
-              autoComplete="off"
               defaultValue={value("km")}
-              placeholder={lastKm != null ? `Última: ${formatKm(lastKm)}` : "Ex.: 45000"}
+              placeholder={lastKm != null ? `Última: ${formatKm(lastKm)}` : "Ex.: 45.000"}
               className={inputClass}
             />
           </div>
@@ -94,11 +92,8 @@ export function RecordForm({
         <div>
           <p className={labelClass}>Próxima revisão (opcional)</p>
           <div className="grid gap-4 sm:grid-cols-2">
-            <input
+            <KmInput
               name="nextServiceKm"
-              inputMode="numeric"
-              pattern="[0-9.]*"
-              autoComplete="off"
               defaultValue={value("nextServiceKm")}
               placeholder="Com quantos km"
               aria-label="Próxima revisão em km"
