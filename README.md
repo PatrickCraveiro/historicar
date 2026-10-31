@@ -79,6 +79,7 @@ usuário que já existe, ele define a nova senha e reativa o usuário, sem mudar
 | `SESSION_SECRET` | Segredo do login, com no mínimo 32 caracteres aleatórios                       |
 | `APP_URL`        | Endereço definitivo do site, sem barra no final. É o que vai dentro do QR      |
 | `SHOP_NAME`      | Nome da oficina (painel, página pública, adesivo e PDF)                        |
+| `CRON_SECRET`    | Só na Vercel: protege a tarefa diária que mantém o banco ativo (`/api/saude`)  |
 
 Para gerar o `SESSION_SECRET`:
 
