@@ -63,6 +63,15 @@ export function ConfirmButton({
   );
 }
 
+/** Botões do fim do formulário. No celular ficam presos no rodapé da tela. */
+export function FormActions({ children }: { children: ReactNode }) {
+  return (
+    <div className="sticky bottom-0 z-10 -mx-4 flex gap-2 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur *:flex-1 sm:static sm:mx-0 sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none sm:*:flex-none">
+      {children}
+    </div>
+  );
+}
+
 export function FormMessage({ state }: { state: FormState }) {
   if (state?.error) {
     return (

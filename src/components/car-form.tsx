@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import type { FormState } from "@/lib/types";
 import { AppLink } from "./app-link";
-import { FormMessage, SubmitButton, fieldValue } from "./form-bits";
+import { FormActions, FormMessage, SubmitButton, fieldValue } from "./form-bits";
 import { btnSecondary, card, inputClass, labelClass } from "./ui";
 
 export interface CarFormValues {
@@ -54,10 +54,10 @@ export function CarForm({
             <input
               id="year"
               name="year"
-              type="number"
-              min={1900}
-              max={2100}
               inputMode="numeric"
+              pattern="[0-9]{4}"
+              maxLength={4}
+              autoComplete="off"
               defaultValue={value("year")}
               placeholder="2018"
               className={inputClass}
@@ -101,10 +101,10 @@ export function CarForm({
 
       <FormMessage state={state} />
 
-      <div className="flex flex-wrap justify-end gap-2">
+      <FormActions>
         <AppLink href={cancelHref} spinner className={btnSecondary}>Cancelar</AppLink>
         <SubmitButton>{submitLabel}</SubmitButton>
-      </div>
+      </FormActions>
     </form>
   );
 }

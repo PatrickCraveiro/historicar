@@ -66,7 +66,7 @@ export default async function QrPage({ params }: PageProps<"/painel/carros/[id]/
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-2 print:hidden">
+      <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-center print:hidden">
         <PrintButton />
         <a href={png} download={`qrcode-${car.plate}.png`} className={btnSecondary}>
           <DownloadIcon /> Baixar imagem (PNG)

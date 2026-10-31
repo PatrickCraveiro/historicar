@@ -44,6 +44,16 @@ As regras ficam todas em [src/lib/permissions.ts](src/lib/permissions.ts). Ningu
 de outra pessoa pelo painel: quem esquecer a senha é recuperado pelo script `criar-mestre`
 (veja abaixo).
 
+## Usando no celular
+
+O painel foi feito para usar no celular, na hora do serviço. Dá para instalar como um app, que
+abre em tela cheia e com ícone próprio (precisa do site já no ar, com `https`):
+
+- **Android (Chrome):** abra o painel, toque no menu **⋮** e em **Instalar app** (ou
+  **Adicionar à tela inicial**).
+- **iPhone (Safari):** abra o painel, toque em **Compartilhar** e em **Adicionar à Tela de
+  Início**.
+
 ## Rodando localmente
 
 Precisa do **Node 20 ou mais novo** (o projeto tem `.nvmrc`; com nvm: `nvm use 20`).

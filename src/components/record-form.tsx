@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { formatKm } from "@/lib/format";
 import type { FormState } from "@/lib/types";
 import { AppLink } from "./app-link";
-import { FormMessage, SubmitButton, fieldValue } from "./form-bits";
+import { FormActions, FormMessage, SubmitButton, fieldValue } from "./form-bits";
 import { ItemsInput } from "./items-input";
 import { btnSecondary, card, inputClass, labelClass } from "./ui";
 
@@ -48,9 +48,9 @@ export function RecordForm({
             <input
               id="km"
               name="km"
-              type="number"
-              min={0}
               inputMode="numeric"
+              pattern="[0-9.]*"
+              autoComplete="off"
               defaultValue={value("km")}
               placeholder={lastKm != null ? `Última: ${formatKm(lastKm)}` : "Ex.: 45000"}
               className={inputClass}
@@ -96,9 +96,9 @@ export function RecordForm({
           <div className="grid gap-4 sm:grid-cols-2">
             <input
               name="nextServiceKm"
-              type="number"
-              min={0}
               inputMode="numeric"
+              pattern="[0-9.]*"
+              autoComplete="off"
               defaultValue={value("nextServiceKm")}
               placeholder="Com quantos km"
               aria-label="Próxima revisão em km"
@@ -117,10 +117,10 @@ export function RecordForm({
 
       <FormMessage state={state} />
 
-      <div className="flex flex-wrap justify-end gap-2">
+      <FormActions>
         <AppLink href={cancelHref} spinner className={btnSecondary}>Cancelar</AppLink>
         <SubmitButton>{submitLabel}</SubmitButton>
-      </div>
+      </FormActions>
     </form>
   );
 }

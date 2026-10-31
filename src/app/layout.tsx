@@ -19,6 +19,8 @@ export const metadata: Metadata = {
     default: `Histórico de manutenção · ${SHOP_NAME}`,
   },
   description: "Histórico de manutenção do veículo",
+  // iPhone: abre em tela cheia quando adicionado à tela de início.
+  appleWebApp: { capable: true, title: "Historicar", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

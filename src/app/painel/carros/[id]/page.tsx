@@ -64,7 +64,8 @@ export default async function CarPage({ params }: PageProps<"/painel/carros/[id]
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2">
+        {/* No celular os botões ficam empilhados, em largura total. */}
+        <div className="grid grid-cols-1 gap-2 sm:flex sm:flex-wrap">
           <AppLink href={`/painel/carros/${id}/anotacoes/nova`} spinner className={btnAccent}>
             <PlusIcon /> Nova anotação
           </AppLink>
