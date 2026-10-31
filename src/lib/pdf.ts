@@ -20,7 +20,7 @@ const COLORS = {
 // As fontes padrão do PDF só conhecem o alfabeto latino (WinAnsi). Acentos do
 // português funcionam; emojis e outros símbolos são removidos para não quebrar.
 const WINANSI_EXTRA = "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ";
-function sanitize(text: string): string {
+export function sanitizePdfText(text: string): string {
   return Array.from(text.replace(/\t/g, " "))
     .filter((ch) => {
       const code = ch.codePointAt(0)!;
@@ -34,7 +34,7 @@ function wrap(text: string, font: PDFFont, size: number, maxWidth: number): stri
   // Separa os parágrafos antes de limpar o texto, senão o sanitize remove o "\n".
   for (const paragraph of text.replace(/\r/g, "").split("\n")) {
     let line = "";
-    for (const word of sanitize(paragraph).split(/\s+/).filter(Boolean)) {
+    for (const word of sanitizePdfText(paragraph).split(/\s+/).filter(Boolean)) {
       const candidate = line ? `${line} ${word}` : word;
       if (font.widthOfTextAtSize(candidate, size) <= maxWidth) {
         line = candidate;
@@ -128,8 +128,8 @@ export async function buildCarPdf(input: {
   const { shopName, car, records, nextService, url, generatedOn } = input;
 
   const doc = await PDFDocument.create();
-  doc.setTitle(sanitize(`Histórico de manutenção - ${carTitle(car)} - ${formatPlate(car.plate)}`));
-  doc.setAuthor(sanitize(shopName));
+  doc.setTitle(sanitizePdfText(`Histórico de manutenção - ${carTitle(car)} - ${formatPlate(car.plate)}`));
+  doc.setAuthor(sanitizePdfText(shopName));
   doc.setLanguage("pt-BR");
 
   const regular = await doc.embedFont(StandardFonts.Helvetica);
@@ -140,7 +140,7 @@ export async function buildCarPdf(input: {
   // Cabeçalho
   w.text(shopName, { font: bold, size: 18 });
   w.text("Histórico de manutenção", { font: regular, size: 11, color: COLORS.muted });
-  const generated = sanitize(`Gerado em ${formatDate(generatedOn)}`);
+  const generated = sanitizePdfText(`Gerado em ${formatDate(generatedOn)}`);
   w.page.drawText(generated, {
     x: PAGE[0] - MARGIN - regular.widthOfTextAtSize(generated, 9),
     y: PAGE[1] - MARGIN - 14,
@@ -184,7 +184,7 @@ export async function buildCarPdf(input: {
       borderColor: COLORS.accent,
       borderWidth: 0.75,
     });
-    w.page.drawText(sanitize(`Próxima revisão: ${nextServiceText(nextService)}`), {
+    w.page.drawText(sanitizePdfText(`Próxima revisão: ${nextServiceText(nextService)}`), {
       x: MARGIN + 12,
       y: w.y - 19,
       size: 11,
@@ -249,9 +249,9 @@ export async function buildCarPdf(input: {
   const pages = doc.getPages();
   pages.forEach((page, index) => {
     const label = `Página ${index + 1} de ${pages.length}`;
-    page.drawText(sanitize(url), { x: MARGIN, y: MARGIN - 14, size: 8, font: regular, color: COLORS.muted });
-    page.drawText(sanitize(label), {
-      x: PAGE[0] - MARGIN - regular.widthOfTextAtSize(sanitize(label), 8),
+    page.drawText(sanitizePdfText(url), { x: MARGIN, y: MARGIN - 14, size: 8, font: regular, color: COLORS.muted });
+    page.drawText(sanitizePdfText(label), {
+      x: PAGE[0] - MARGIN - regular.widthOfTextAtSize(sanitizePdfText(label), 8),
       y: MARGIN - 14,
       size: 8,
       font: regular,

@@ -131,8 +131,10 @@ src/
     data.ts                consultas ao banco
     db.ts                  conexão com o MongoDB e índices
     form.ts                validação dos formulários
-    pdf.ts                 montagem do PDF
+    pdf.ts                 montagem do PDF do histórico
+    sticker.tsx            adesivo com o QR (PNG e PDF em tamanho real)
     permissions.ts         quem pode fazer o quê
   proxy.ts                 bloqueia /painel para quem não está logado
 scripts/criar-mestre.mjs   cria um mestre ou recupera o acesso de quem esqueceu a senha
+assets/fonts/              fonte Geist usada no PNG do adesivo (licença OFL)
 ```

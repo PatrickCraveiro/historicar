@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import QRCode from "qrcode";
 import { AppLink } from "@/components/app-link";
-import { ArrowLeftIcon, DownloadIcon, WrenchIcon } from "@/components/icons";
-import { PlateBadge } from "@/components/plate-badge";
-import { PrintButton } from "@/components/print-button";
-import { btnGhost, btnSecondary, card } from "@/components/ui";
+import { ArrowLeftIcon, DownloadIcon, PrinterIcon } from "@/components/icons";
+import { btnAccent, btnGhost, btnSecondary } from "@/components/ui";
 import { requireUser } from "@/lib/auth";
-import { SHOP_NAME } from "@/lib/config";
 import { getCarById } from "@/lib/data";
 import { carTitle } from "@/lib/format";
 import { carPublicUrl, getPublicBaseUrl } from "@/lib/public-url";
@@ -22,18 +19,16 @@ export default async function QrPage({ params }: PageProps<"/painel/carros/[id]/
 
   const base = await getPublicBaseUrl();
   const url = carPublicUrl(base.url, car.publicCode);
-  // Nível "M" de correção: aguenta um pouco de sujeira/desgaste no adesivo.
-  const svg = await QRCode.toString(url, { type: "svg", errorCorrectionLevel: "M", margin: 0 });
-  const png = await QRCode.toDataURL(url, { errorCorrectionLevel: "M", margin: 2, width: 1024 });
+  const sticker = `/painel/carros/${id}/qr/adesivo`;
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4 print:hidden">
+      <div className="space-y-4">
         <AppLink href={`/painel/carros/${id}`} className={btnGhost}>
           <ArrowLeftIcon /> Voltar
         </AppLink>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">QR code</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Adesivo com QR code</h1>
           <p className="text-slate-500">{carTitle(car)}</p>
         </div>
 
@@ -51,29 +46,32 @@ export default async function QrPage({ params }: PageProps<"/painel/carros/[id]/
         </p>
       </div>
 
+      {/* A prévia é o próprio PNG: o que aparece aqui é o que sai na impressão. */}
       <div className="flex justify-center">
-        <div
-          className={`${card} flex w-72 flex-col items-center gap-3 p-5 text-center print:w-[7cm] print:rounded-xl print:border-2 print:border-slate-900 print:p-4 print:shadow-none`}
-        >
-          <div className="flex items-center gap-2 font-bold text-slate-900">
-            <WrenchIcon className="size-4 text-blue-700" />
-            <span>{SHOP_NAME}</span>
-          </div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Histórico de manutenção</p>
-          <div className="w-full" dangerouslySetInnerHTML={{ __html: svg }} />
-          <p className="text-xs text-slate-600">Aponte a câmera do celular</p>
-          <PlateBadge plate={car.plate} size="sm" />
-        </div>
+        <Image
+          src={`${sticker}.png`}
+          alt={`Adesivo com o QR code do ${carTitle(car)}`}
+          width={840}
+          height={984}
+          unoptimized
+          priority
+          className="h-auto w-64 drop-shadow-md"
+        />
       </div>
 
-      <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-center print:hidden">
-        <PrintButton />
-        <a href={png} download={`qrcode-${car.plate}.png`} className={btnSecondary}>
-          <DownloadIcon /> Baixar imagem (PNG)
+      <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-center">
+        <a href={`${sticker}.pdf`} target="_blank" className={btnAccent}>
+          <PrinterIcon /> Imprimir adesivo (PDF)
+        </a>
+        <a href={`${sticker}.png?download=1`} download={`adesivo-${car.plate}.png`} className={btnSecondary}>
+          <DownloadIcon /> Baixar adesivo (PNG)
         </a>
       </div>
 
-      <p className="break-all text-center font-mono text-xs text-slate-400 print:hidden">{url}</p>
+      <p className="text-center text-sm text-slate-500">
+        Tamanho do adesivo: 7 × 8,2 cm. Na hora de imprimir o PDF, escolha <strong>tamanho real (100%)</strong>.
+      </p>
+      <p className="break-all text-center font-mono text-xs text-slate-400">{url}</p>
     </div>
   );
 }
